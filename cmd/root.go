@@ -3,7 +3,6 @@
 package cmd
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"os"
@@ -121,15 +120,20 @@ func handleAlerts(httpAPI v1.API) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	alerts, err := httpAPI.Alerts(ctx)
+	alertsResult, err := httpAPI.Alerts(ctx)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	command := commandSilent
-	if len(alerts.Alerts) > 0 {
-		command = commandFiring
+
+	// Change the command when alerts are firing
+	for _, alert := range alertsResult.Alerts {
+		if alert.State == v1.AlertStateFiring {
+			command = commandFiring
+			break
+		}
 	}
 
 	err = execute(command)
@@ -141,25 +145,14 @@ func handleAlerts(httpAPI v1.API) error {
 	return nil
 }
 
-// execute
+// execute returns an error if it failes to execute the command
 func execute(command string) error {
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-
 	commandSlice := strings.Fields(command)
 	name := commandSlice[0]
-	cmd := exec.Command(name)
-	if len(commandSlice) > 1 {
-		args := commandSlice[1:]
-		cmd = exec.Command(name, args...)
-	}
+	args := commandSlice[1:]
 
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
+	cmd := exec.Command(name, args...)
 	err := cmd.Run()
-
-	fmt.Println(stdout.String())
-	fmt.Println(stderr.String())
 
 	return err
 }
