@@ -27,8 +27,7 @@ script:
   - go vet $(go list ./... | grep -v /vendor/)
   - go test -v -race ./...
   # Only build binaries from the latest Go release.
-  #- if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
-  - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+  - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
 
 deploy:
   provider: releases
@@ -38,7 +37,7 @@ deploy:
     secure: "QxrQfhsSY99AA9c4UYjCgEQOKH295Ac0KsETW+E7ehaavwjs583DUED7UsYsDJir2syJ/V6N6h6feJSPigbIb4owfSrP9cMv2XllF7d39P0G+TFrBjFgHiXJmnV4JQ212HhVUbT/SqPixsp2uzSIWu4WU9wBMuCvKp9Y+6LXs1nrSSZbw1UkM35HOdSVowW5ZWHVXC/djqZrwSDL1DkU8lnVijipWZo5maWoVpnrTQV0uuo+uqsTnM+ptQPxNAr1J91Rx7fffoJXneEXqH7K8yixfhGDp2ifF+SsGOvbFMC/+ab/MxhI1cXMZqhcwsbVZve0hXdWb+K5EVVTyP/gZEJWT0g1cZgJx7R99HC405vvaWPfPC9amP7lT5mVb+/dzGV00iorgHasxJBR5kZGt5NfsR7hj7Nh9CvwHIcl76mUE3o697jO5n9YwLFOfn80NaltzXwX9b6s9nJe5Ardg3YaXvU0KPoIFnpG7gr9DcDDLBdR4gCA0W+FjSXIeat5PJj7qHJ2unQb3Ztk5ewER6881yhEIassb0qJn3hJSvCPI1ld1JmmEkxlVfJqg0XdtLFsFTPyjXT0KzZs5l5J7m3Sa7lKVJ6t4XW79U+Ys4D7KZo3RxrWENSLLai6+9ZVJurQ01vlbBEmADshoYNQm3L2b9CG7BcCXyPpO6YVJhw="
   file:
     # The names of the binaries to output, based on the -output template passed to gox.
-    #- deucalion.windows.amd64.exe
+    - deucalion.windows.amd64.exe
     - deucalion.darwin.amd64
     - deucalion.linux.amd64
   on:
