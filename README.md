@@ -37,3 +37,62 @@ Flags:
   -s, --silent string   Command to execute when alerts aren't firing
   -u, --url string      Promtheus URL (default "http://localhost:9090/")
 ```
+
+## Configuration
+
+The config file (`--config`) is written as follows:
+
+```yaml
+---
+url: <URL>
+firing: <COMMAND>
+silent: <COMMAND>
+```
+
+## Scheduled run
+
+As the command can be run like any other, it is up to you on how to automate the process. An example of how we're using this, is through systemd timers. This looks as follows:
+
+`/etc/systemd/system/deucalion@.service`:
+
+```console
+[Unit]
+Description=Deucalion run
+After=syslog.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%i
+ExecStart=/usr/local/bin/deucalion
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+`/etc/systemd/system/deucalion@.timer`:
+
+```console
+[Unit]
+Description=Run Deucalion every minute
+
+[Timer]
+Persistent=false
+OnBootSec=80
+OnCalendar=minutely
+Unit=deucalion@%i.service
+
+[Install]
+WantedBy=timers.target
+```
+
+This requires you have `deucalion` installed in `/usr/local/bin/deucalion`. But obviously, feel free to change the path. The timer will run the command every minute, using the user given in the commands below.
+
+To enable and start this process where `USER` is your own user:
+
+```console
+systemctl daemon-reload
+systemctl enable --now deucalion@USER.timer
+```
