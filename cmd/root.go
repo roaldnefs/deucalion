@@ -17,15 +17,15 @@ import (
 )
 
 const (
+	// The default base URL for API requests to Prometheus.
 	defaultBaseURL = "http://localhost:9090/"
 )
 
 var (
-	// Used for command flags.
-	cfgFile                      string
-	commandSilent, commandFiring string
+	// Used for command flags
+	cfgFile string
 
-	// rootCmd represents the base command when called without any subcommands
+	// rootCmd represents the base command when called without any subcommands.
 	rootCmd = &cobra.Command{
 		Use:   "deucalion",
 		Short: "A tool for querying a Prometheus instance for alerts and run commands based on the result.",
@@ -60,13 +60,11 @@ func init() {
 	rootCmd.PersistentFlags().StringP("url", "u", defaultBaseURL, "Promtheus URL")
 	viper.BindPFlag("url", rootCmd.PersistentFlags().Lookup("url"))
 
-	//
-	rootCmd.Flags().StringVarP(&commandSilent, "silent", "s", "", "command to execute when alerts aren't firing")
-	rootCmd.MarkFlagRequired("silent")
-
-	//
-	rootCmd.Flags().StringVarP(&commandFiring, "firing", "f", "", "command to execute when alerts are firing")
-	rootCmd.MarkFlagRequired("firing")
+	// Commands that are executed based on the Prometheus API resonse.
+	rootCmd.PersistentFlags().StringP("silent", "s", "", "command to execute when alerts aren't firing")
+	viper.BindPFlag("silent", rootCmd.PersistentFlags().Lookup("silent"))
+	rootCmd.PersistentFlags().StringP("firing", "f", "", "command to execute when alerts are firing")
+	viper.BindPFlag("firing", rootCmd.PersistentFlags().Lookup("firing"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -87,7 +85,8 @@ func initConfig() {
 		viper.SetConfigName(".deucalion")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	// Read in environment variable that match.
+	viper.AutomaticEnv()
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
@@ -112,6 +111,9 @@ func newAPI() v1.API {
 
 // handleAlerts
 func handleAlerts(httpAPI v1.API) error {
+	commandSilent := viper.GetString("silent")
+	commandFiring := viper.GetString("firing")
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
