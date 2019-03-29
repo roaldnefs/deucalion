@@ -24,6 +24,7 @@ const (
 var (
 	// Used for command flags
 	cfgFile string
+	debug   bool
 
 	// rootCmd represents the base command when called without any subcommands.
 	rootCmd = &cobra.Command{
@@ -48,6 +49,8 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
+	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "enable debug logging")
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -90,7 +93,9 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		if debug {
+			fmt.Println("Using config file:", viper.ConfigFileUsed())
+		}
 	}
 }
 
