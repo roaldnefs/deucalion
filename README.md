@@ -31,11 +31,13 @@ Usage:
   deucalion [flags]
 
 Flags:
-      --config string   config file (default is $HOME/.deucalion.yaml)
-  -f, --firing string   Command to execute when alerts are firing
-  -h, --help            help for deucalion
-  -s, --silent string   Command to execute when alerts aren't firing
-  -u, --url string      Promtheus URL (default "http://localhost:9090/")
+      --config string     config file (default is $HOME/.deucalion.yaml)
+  -d, --debug             enable debug logging
+  -f, --firing string     command to execute when alerts are firing
+  -h, --help              help for deucalion
+      --severity string   the severity label
+  -s, --silent string     command to execute when alerts aren't firing
+  -u, --url string        Promtheus URL (default "http://localhost:9090/")
 ```
 
 ## Configuration
@@ -47,6 +49,7 @@ The config file (`--config`) is written as follows:
 url: <URL>
 firing: <COMMAND>
 silent: <COMMAND>
+severity: <LABELVALUE>
 ```
 
 ## Scheduled run
