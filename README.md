@@ -38,16 +38,18 @@ Flags:
       --severity string   the severity label
   -s, --silent string     command to execute when alerts aren't firing
   -u, --url string        Promtheus URL (default "http://localhost:9090/")
+  -w, --warning string    command to execute when alerts are firing and below specified severity
 ```
 
 ## Configuration
 
-The config file (`--config`) is written as follows:
+The configuration file (`--config`) is written as follows:
 
 ```yaml
 ---
 url: <URL>
 firing: <COMMAND>
+warning: <COMMAND>
 silent: <COMMAND>
 severity: <LABELVALUE>
 ```

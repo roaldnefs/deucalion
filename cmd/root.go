@@ -68,6 +68,8 @@ func init() {
 	viper.BindPFlag("silent", rootCmd.PersistentFlags().Lookup("silent"))
 	rootCmd.PersistentFlags().StringP("firing", "f", "", "command to execute when alerts are firing")
 	viper.BindPFlag("firing", rootCmd.PersistentFlags().Lookup("firing"))
+	rootCmd.PersistentFlags().StringP("warning", "w", "", "command to execute when alerts are firing and below specified severity")
+	viper.BindPFlag("warning", rootCmd.PersistentFlags().Lookup("warning"))
 
 	// Only execute the firing command if the severity is matched.
 	rootCmd.PersistentFlags().StringP("severity", "", "", "the severity label")
@@ -122,6 +124,7 @@ func newAPI() v1.API {
 func handleAlerts(httpAPI v1.API) error {
 	commandSilent := viper.GetString("silent")
 	commandFiring := viper.GetString("firing")
+	commandWarning := viper.GetString("warning")
 	severity := viper.GetString("severity")
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -144,6 +147,7 @@ func handleAlerts(httpAPI v1.API) error {
 		if alert.State == v1.AlertStateFiring {
 			// Skip if a severity is given but does not match the label
 			if severity != "" && alertSeverity != severity {
+				command = commandWarning
 				continue
 			}
 
