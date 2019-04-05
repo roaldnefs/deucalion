@@ -142,7 +142,6 @@ func handleAlerts(httpAPI v1.API) error {
 	for _, alert := range alertsResult.Alerts {
 		// Get the severity (label) of the alert
 		alertSeverity := string(alert.Labels["severity"])
-		fmt.Println(alertSeverity)
 		// Check if the alert is firing
 		if alert.State == v1.AlertStateFiring {
 			// Skip if a severity is given but does not match the label
