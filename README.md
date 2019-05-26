@@ -62,7 +62,6 @@ We recommend running the service and timer as your own user, and therefore sugge
 
 ```console
 mkdir -p ~/.local/share/systemd/user
-sudo loginctl enable-linger $USER
 ```
 
 Create the required files:
