@@ -56,9 +56,17 @@ severity: <LABELVALUE>
 
 ## Scheduled run
 
-As the command can be run like any other, it is up to you on how to automate the process. An example of how we're using this, is through systemd timers. This looks as follows:
+We recommend running the service and timer as your own user, and therefore suggest you run them in systemd user mode. To achieve this, please do the following:
 
-`/etc/systemd/system/deucalion@.service`:
+### Prerequisites
+
+```console
+mkdir -p ~/.local/share/systemd/user
+sudo loginctl enable-linger $USER
+```
+
+Create the required files:
+`~/.local/share/systemd/user/deucalion.service`:
 
 ```console
 [Unit]
@@ -68,7 +76,6 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=%i
 ExecStart=/usr/local/bin/deucalion
 Restart=always
 RestartSec=10
@@ -77,7 +84,7 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-`/etc/systemd/system/deucalion@.timer`:
+`~/.local/share/systemd/user/deucalion.timer`:
 
 ```console
 [Unit]
@@ -87,7 +94,7 @@ Description=Run Deucalion every minute
 Persistent=false
 OnBootSec=80
 OnCalendar=minutely
-Unit=deucalion@%i.service
+Unit=deucalion.service
 
 [Install]
 WantedBy=timers.target
@@ -95,9 +102,9 @@ WantedBy=timers.target
 
 This requires you have `deucalion` installed in `/usr/local/bin/deucalion`. But obviously, feel free to change the path. The timer will run the command every minute, using the user given in the commands below.
 
-To enable and start this process where `USER` is your own user:
+To enable and start the timer, please run the following commands:
 
 ```console
-systemctl daemon-reload
-systemctl enable --now deucalion@USER.timer
+systemctl --user daemon-reload
+systemctl --user enable --now deucalion.timer
 ```
