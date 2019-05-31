@@ -109,6 +109,10 @@ func initConfig() {
 func newAPI() v1.API {
 	baseURL := viper.GetString("url")
 
+	if debug {
+		fmt.Println("Using API URL:", baseURL)
+	}
+
 	client, err := api.NewClient(api.Config{Address: baseURL})
 	if err != nil {
 		fmt.Println(err)
@@ -155,17 +159,17 @@ func handleAlerts(httpAPI v1.API) error {
 		}
 	}
 
-	err = execute(command)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	if debug {
+		fmt.Println("Using command:", command)
 	}
+
+	execute(command)
 
 	return nil
 }
 
 // execute returns an error if it failes to execute the command
-func execute(command string) error {
+func execute(command string) {
 	commandSlice := strings.Fields(command)
 	name := commandSlice[0]
 	args := commandSlice[1:]
@@ -173,5 +177,8 @@ func execute(command string) error {
 	cmd := exec.Command(name, args...)
 	err := cmd.Run()
 
-	return err
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
