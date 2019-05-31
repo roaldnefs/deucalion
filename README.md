@@ -1,7 +1,7 @@
 [![Travis CI](https://img.shields.io/travis/roaldnefs/deucalion.svg?style=for-the-badge)](https://travis-ci.org/roaldnefs/deucalion)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/roaldnefs/deucalion)
 [![Github All Releases](https://img.shields.io/github/downloads/roaldnefs/deucalion/total.svg?style=for-the-badge)](https://github.com/roaldnefs/deucalion/releases)
-![GitHub](https://img.shields.io/github/license/roaldnefs/deucalion.svg?style=for-the-badge)
+[![GitHub](https://img.shields.io/github/license/roaldnefs/deucalion.svg?style=for-the-badge)](https://github.com/roaldnefs/deucalion/blob/master/LICENSE)
 
 Named after the son of Prometheus. A tool for querying a Prometheus instance for alerts and run commands based on the result.
 
