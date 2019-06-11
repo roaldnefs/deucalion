@@ -8,6 +8,9 @@ Named after the son of Prometheus. A tool for querying a Prometheus instance for
      * [Binaries](README.md#binaries)
      * [Via Go](README.md#via-go)
 * [Usage](README.md#usage)
+* [Configuration](README.md#configuration)
+* [Scheduled run](README.md#scheduled-run)
+     * Prerequisites(README.md#prerequisites)
 
 ## Installation
 
