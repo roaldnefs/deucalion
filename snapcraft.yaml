@@ -1,0 +1,19 @@
+name: deucalion
+version: git
+summary: Query Prometheus
+description: |
+  A tool for querying a Prometheus instance for alerts and run commands based on the result.
+confinement: devmode
+base: core18
+parts:
+  deucalion:
+    plugin: go
+    go-importpath: github.com/roaldnefs/deucalion
+    source: .
+    source-type: git
+    build-packages:
+    - gcc
+
+apps:
+  deucalion:
+    command: bin/deucalion
