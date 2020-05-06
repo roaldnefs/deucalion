@@ -58,6 +58,10 @@ silent: <COMMAND>
 severity: <LABELVALUE>
 ```
 
+## Examples
+
+Examples can be found in the `examples` directory. Having a very basic deucalion.yaml file, which should be placed in `$HOME/.deucalion.yaml`, and a `mousitoring.sh` script that can change the colours of Steelseries rival mice.
+
 ## Scheduled run
 
 We recommend running the service and timer as your own user, and therefore suggest you run them in systemd user mode. To achieve this, please do the following:
@@ -110,4 +114,10 @@ To enable and start the timer, please run the following commands:
 ```console
 systemctl --user daemon-reload
 systemctl --user enable --now deucalion.timer
+```
+
+Check if the timer has been loaded properly:
+
+```console
+systemctl --user list-timers --all
 ```

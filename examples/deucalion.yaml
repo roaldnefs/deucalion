@@ -1,0 +1,6 @@
+---
+url: https://example.com/prometheus/
+firing: /home/user/.local/bin/mousitoring.sh firing
+warning: /home/user/.local/bin/mousitoring.sh warning
+silent: /home/user/.local/bin/mousitoring.sh silent
+severity: page
